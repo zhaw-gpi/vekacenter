@@ -1,0 +1,17 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>VeKa Center Auskunftsdienst</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    <p>Willkommen beim VeKa-Center-Auskunftsdienst.</p>
+    <p>Die folgenden REST-Operationen stehen derzeit zur Verfügung:</p>
+    <ul>
+        <li><strong>Grundversicherung für eine Karte/Person prüfen</strong>: http://localhost:8070/vekaapi/checkbaseinsurance?firstName=VORNAME&officialName=NACHNAME&dateOfBirth=TT.MM.JJJJ&baseInsuranceNumber=NUMMER</li>
+        <li><strong>Versicherer zu einer Kartennummer erhalten</strong>: http://localhost:8070/vekaapi/getinsurerofcard?baseInsuranceNumber=NUMMER</li>
+        <li><strong>(Neuen) Versicherer hinzufügen</strong>: http://localhost:8070/vekaapi/addinsurer?name=NAME&street=STRASSE&housenumber=HAUSNUMMER&plz=POSTLEITZAHL&town=ORT</li>
+    </ul>
+    <p>Zudem können Sie <a href="/registeredinsurerer">hier</a> eine Liste aller aktuell registrierten Versicherern abrufen.</p>
+</body>
+</html>

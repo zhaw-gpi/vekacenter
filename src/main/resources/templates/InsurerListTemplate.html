@@ -1,0 +1,16 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Liste registrierter Versicherer</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    <h1>Liste aller registrierten Versicherer</h1>
+    <table th:object="${insurerList}">
+        <tr th:each="insurer :${insurerList}">
+            <td th:text="${insurer.getName()}"></td>
+            <td th:text="${insurer.getAddress().getPlz() + ' ' + insurer.getAddress().getTown()}"></td>
+        </tr>
+    </table>
+</body>
+</html>
