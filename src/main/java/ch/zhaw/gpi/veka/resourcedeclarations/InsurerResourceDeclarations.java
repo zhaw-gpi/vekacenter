@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Klasse, welche alle REST-Resourcen deklariert in Bezug zu den Karten
+ * Klasse, welche alle REST-Resourcen deklariert in Bezug zu den Versicherern
  * 
- * Für Demo-Zwecke sind zwei davon aufgeführt, eine davon für den eUmzug relevant
+ * Für Demo-Zwecke ist eine davon aufgeführt
  * 
  * @author scep
  */
