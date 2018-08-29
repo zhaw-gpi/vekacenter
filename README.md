@@ -5,11 +5,9 @@
 > Dokumentation letztmals aktualisiert: 29.8.2018
 
 Dieses Projekt simuliert den VeKa (Versichertenkarten)-Center-Austauschdienst, welcher unter anderem für die [Umzugsplattform](https://github.com/zhaw-gpi/eumzug-plattform-2018) benötigt wird.
-
-## Inhaltsverzeichnis
   
 
-### Wie können Studierende Bonus-Punkte sammeln (in Aufgabenstellung verschieben)
+## Wie können Studierende Bonus-Punkte sammeln (in Aufgabenstellung verschieben)
 1. Weitere BusinessLogik, welche sie per REST anbieten (z.B. aktualisieren eines Versicherers und vor allem Aktualisieren der Adresse nach erfolgreicher Umzugsmeldung)
 2. Weitere Frontend-Funktionalitäten
 
@@ -42,7 +40,7 @@ Dieses Projekt simuliert den VeKa (Versichertenkarten)-Center-Austauschdienst, w
         3. InsurerListController, welcher dieses Template mit einem Model füttert und das Mapping auf den Request definiert
 6. "Sinnvolle" **Grundkonfiguration** in application.properties für Tomcat, Datenbank und Datumsformat
 
-### Deployment
+## Deployment
 1. **Erstmalig** oder bei Problemen ein **Clean & Build (Netbeans)**, respektive `mvn clean install` (Cmd) durchführen
 2. Bei Änderungen am POM-File oder bei **(Neu)kompilierungsbedarf** genügt ein **Build (Netbeans)**, respektive `mvn install`
 3. Für den **Start** ist ein **Run (Netbeans)**, respektive `java -jar .\target\NAME DES JAR-FILES.jar` (Cmd) erforderlich. Dabei wird Tomcat gestartet, die Datenbank erstellt/hochgefahren mit den Eigenschaften (application.properties) und die verschiedenen Resourcen-URL-Mappings vorgenommen.
