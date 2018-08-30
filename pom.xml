@@ -11,17 +11,6 @@
     <name>VeKa Center Auskunftsdienst</name>
     <version>2.0.1</version>
     
-    <!-- Konfiguration des Maven-Projekts -->
-    <properties>
-        <!-- Nicht bloss ANSI, sondern UTF-8 soll unterstützt sein -->
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        
-        <!-- Java 8 soll genutzt werden beim Kompilieren -->
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-    </properties>
-    
     <!-- Importiert Das Spring Boot-Starter-Parent Projekt als Eltern-Maven-Projekt: https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-parent/2.0.4.RELEASE -->
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -57,8 +46,8 @@
     </dependencies>
     
     <!-- The Spring Boot Maven Plugin provides Spring Boot support in Maven, 
-            allowing you to package executable jar or war archives and run an application “in-place”.
-            https://docs.spring.io/spring-boot/docs/2.0.4.RELEASE/maven-plugin/usage.html -->
+    allowing you to package executable jar or war archives and run an application “in-place”.
+    https://docs.spring.io/spring-boot/docs/2.0.4.RELEASE/maven-plugin/usage.html -->
     <build>
         <plugins>
             <plugin>
