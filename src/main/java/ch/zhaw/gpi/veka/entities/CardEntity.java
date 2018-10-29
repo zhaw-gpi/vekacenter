@@ -4,35 +4,43 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * Entity-Klasse für Versichertenkarte
  * 
  * Attribute angelehnt an https://de.wikipedia.org/wiki/Versichertenkarte_(Schweiz)
  * 
- * @Entity, um die Klasse als JPA Entität zu kennzeichnen, damit automatisch
- * im Hintergrund über Hibernate eine Tabelle in der H2-Datenbank erstellt
- * und verwaltet werden kann
- * 
  * @author scep
  */
 @Entity(name = "Card")
 public class CardEntity implements Serializable {
-    // @Id, um JPA mitzuteilen, dass dieses Attribut der Primärschlüssel ist
+    // Manuell gesetzte Versichertenkarte-Id
     @Id
     private Long cardNumber;
     
+    // Ablaufdatum der Karte
+    @Temporal(TemporalType.DATE)
     private Date expiryDate;
     
-    // Unidirektionale 1:1-Beziehung herstellen mit einer Versicherer-Entität
-    @OneToOne(targetEntity = InsurerEntity.class)
+    // Referenz auf einen Versicherer
+    @ManyToOne
+    @JoinColumn(name = "INSURER_ID")
     private InsurerEntity insurer;
     
-    // Unidirektionale 1:1-Beziehung herstellen mit einer Versicherten-Entität
-    @OneToOne(targetEntity = PersonEntity.class)
+    // Referenz auf eine versicherte Person
+    @ManyToOne
+    @JoinColumn(name = "PERSON_ID")
     private PersonEntity insuredPerson;
+    
+    // Beinhaltet die Karte eine Grundversicherung (false, falls nur Zusatzversicherungen)
+    private Boolean baseInsured;
 
+    
+    // GETTER und SETTER
     public long getCardNumber() {
         return cardNumber;
     }
@@ -64,6 +72,12 @@ public class CardEntity implements Serializable {
     public void setInsuredPerson(PersonEntity insuredPerson) {
         this.insuredPerson = insuredPerson;
     }
-    
-    
+
+    public Boolean isBaseInsured() {
+        return baseInsured;
+    }
+
+    public void setBaseInsured(Boolean baseInsured) {
+        this.baseInsured = baseInsured;
+    }
 }

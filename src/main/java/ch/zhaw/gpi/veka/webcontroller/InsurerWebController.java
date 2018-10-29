@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * Spring-Web-Controller, welcher Ressourcen im Zusammenhang mit Versicherer-Daten bereitstellt
@@ -18,7 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
  * @author scep
  */
 @Controller
-public class InsurerListController {
+public class InsurerWebController {
     
     // Das Repository für die Kommunikation mit der Versicherer-Datenbanktabelle verdrahten
     @Autowired
@@ -32,15 +34,15 @@ public class InsurerListController {
      * 
      * @GetMapping      Kennzeichnet diese Methode als Web-Ressource, welche über den Request mit /registeredinsurer zurückgegeben wird
      */
-    @GetMapping("/registeredinsurerer")
-    public String insurerListView(Model model){
+    @RequestMapping(value = "/insurerer", method = RequestMethod.GET)
+    public String insurererView(Model model){
         // Liste aller Versicherer erhalten
-        List<InsurerEntity> insurerList = insurerRepository.findAllByOrderByName();
+        List<InsurerEntity> insurerer = insurerRepository.findAllByOrderByName();
         
         // Diese Liste einem Attribut im Model übergeben
-        model.addAttribute("insurerList", insurerList);
+        model.addAttribute("insurerer", insurerer);
         
         // Den Namen des zu rendernden Templates (src/main/resources/templates) zurückgeben
-        return "InsurerListTemplate";
+        return "InsurererTemplate";
     }
 }

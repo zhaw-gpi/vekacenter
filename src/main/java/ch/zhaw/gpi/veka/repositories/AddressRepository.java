@@ -2,16 +2,14 @@ package ch.zhaw.gpi.veka.repositories;
 
 import ch.zhaw.gpi.veka.entities.AddressEntity;
 import java.util.List;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
- * CRUD-Repository-Klasse für AddressEntity-Objekte
- * 
- * Erweitert die Standard Spring-CrudRepository
+ * Repository-Klasse für Adresse-Entität, welche CRUD-Operationen auf die dahinterliegende Datenbank kapselt
  * 
  * @author scep
  */
-public interface AddressRepository extends CrudRepository<AddressEntity, Long>{
+public interface AddressRepository extends JpaRepository<AddressEntity, Long>{
     
     // Benutzerdefinierte Methode, um Adressen zu finden, bei denen alle
     // Eigenschaften von Strasse bis Ort zutreffen. Im Hintergrund wird von JPA

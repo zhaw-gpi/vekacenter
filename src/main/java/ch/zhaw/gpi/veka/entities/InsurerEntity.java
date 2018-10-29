@@ -1,34 +1,50 @@
 package ch.zhaw.gpi.veka.entities;
 
 import java.io.Serializable;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 /**
  * Entity-Klasse für Versicherer
- * 
- * @Entity, um die Klasse als JPA Entität zu kennzeichnen, damit automatisch
- * im Hintergrund über Hibernate eine Tabelle in der H2-Datenbank erstellt
- * und verwaltet werden kann
  * 
  * @author scep
  */
 @Entity(name = "Insurer")
 public class InsurerEntity implements Serializable {
-    // @Id, um JPA mitzuteilen, dass dieses Attribut der Primärschlüssel ist
+    // BAG-Nummer des Versicherers als Id
     @Id
-    // und dabei automatisch generiert werden soll (+1 für jeden neuen Eintrag)
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
+    // Name des Versicherers
     private String name;
     
-    // Unidirektionale 1:1-Beziehung herstellen mit einer Adressen-Entität
-    @OneToOne(targetEntity = AddressEntity.class)
+    // Referenz auf eine Adresse
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "ADDRESS_ID")
     private AddressEntity address;
+    
+    // Telefonnummer
+    private String phoneNumber;
+
+    // E-Mail-Adresse
+    private String eMail;
+
+    // Homepage-URL
+    private String websiteUrl;
+
+    
+
+    // GETTER und SETTER
+    public Long getId() {
+        return id;
+    }
+    
+    public void setId(Long id) {    
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -48,5 +64,27 @@ public class InsurerEntity implements Serializable {
         return this;
     }
     
-    
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String geteMail() {
+        return eMail;
+    }
+
+    public void seteMail(String eMail) {
+        this.eMail = eMail;
+    }
+
+    public String getWebsiteUrl() {
+        return websiteUrl;
+    }
+
+    public void setWebsiteUrl(String websiteUrl) {
+        this.websiteUrl = websiteUrl;
+    }
 }

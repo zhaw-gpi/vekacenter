@@ -6,32 +6,32 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 /**
  * Entity-Klasse für (versicherte) Person
- * 
- * @Entity, um die Klasse als JPA Entität zu kennzeichnen, damit automatisch
- * im Hintergrund über Hibernate eine Tabelle in der H2-Datenbank erstellt
- * und verwaltet werden kann
  * 
  * @author scep
  */
 @Entity(name = "Person")
 public class PersonEntity implements Serializable {
-    // @Id, um JPA mitzuteilen, dass dieses Attribut der Primärschlüssel ist
+    // Automatisch generierte Personen-Id
     @Id
-    // und dabei automatisch generiert werden soll (+1 für jeden neuen Eintrag)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private String firstName;
-    private String officialName;
-    private Integer sex;
-    private Date dateOfBirth;
-    private Long vn;
     
-    // 1:1-Beziehung herstellen mit einer Adress-Entität
-    @OneToOne(targetEntity = AddressEntity.class)
+    // Vorname
+    private String firstName;
+    
+    // Nachname
+    private String officialName;
+    
+    // Geburtsdatum
+    private Date dateOfBirth;
+    
+    // Referenz auf eine Adresse
+    @ManyToOne
     private AddressEntity addressPostal;
 
     public long getId() {
@@ -58,14 +58,6 @@ public class PersonEntity implements Serializable {
         this.officialName = officialName;
     }
 
-    public int getSex() {
-        return sex;
-    }
-
-    public void setSex(Integer sex) {
-        this.sex = sex;
-    }
-
     public Date getDateOfBirth() {
         return dateOfBirth;
     }
@@ -74,21 +66,11 @@ public class PersonEntity implements Serializable {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public long getVn() {
-        return vn;
-    }
-
-    public void setVn(Long vn) {
-        this.vn = vn;
-    }
-
     public AddressEntity getAddressPostal() {
         return addressPostal;
     }
 
     public void setAddressPostal(AddressEntity addressPostal) {
         this.addressPostal = addressPostal;
-    }
-    
-    
+    }   
 }

@@ -6,13 +6,109 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-    <p>Willkommen beim VeKa-Center-Auskunftsdienst.</p>
-    <p>Die folgenden REST-Operationen stehen derzeit zur Verfügung:</p>
+    <h1>Willkommen beim VeKa-Center-Auskunftsdienst.</h1>
+    <p>Die folgenden <strong>REST-Operationen</strong> stehen für authorisierte Aufrufer zur Verfügung:</p>
     <ul>
-        <li><strong>Grundversicherung für eine Karte/Person prüfen</strong>: http://localhost:8070/vekaapi/checkbaseinsurance?firstName=VORNAME&officialName=NACHNAME&dateOfBirth=TT.MM.JJJJ&baseInsuranceNumber=NUMMER</li>
-        <li><strong>Versicherer zu einer Kartennummer erhalten</strong>: http://localhost:8070/vekaapi/getinsurerofcard?baseInsuranceNumber=NUMMER</li>
-        <li><strong>(Neuen) Versicherer hinzufügen</strong>: http://localhost:8070/vekaapi/addinsurer?name=NAME&street=STRASSE&housenumber=HAUSNUMMER&plz=POSTLEITZAHL&town=ORT</li>
+        <li><strong>Informationen zu einer Grundversicherungskarte erhalten</strong>:
+            <ul>
+                <li>Request URL: GET http://localhost:8070/vekaapi/v1/cards/{cardNumber}</li>
+                <li>Request Parameter: {cardNumber} durch Versichertenkartennummer ersetzen</li>
+                <li>Response mit gefundener Karte:      
+<pre><code>{
+    "cardNumber" : 80744660022944388930,
+    "expiryDate" : "2021-12-31T00:00:00.000+0100",
+    "insurer": 
+    {
+        "bagNumber" : 1555,
+        "name" : "Visana AG",
+        "address" :
+        {
+            "street" : "Weltpoststrasse",
+            "houseNumber" : "19/21",
+            "zipCode" : 3000,
+            "town" : "Bern 15"
+        },
+        "phone" : "+41313579111",
+        "email" : "info@visana.ch",
+        "www" : "www.visana.ch"
+    },
+    "insuredPerson" :
+    {
+        "firstName" : "Hans",
+        "officialName" : "Meier",
+        "dateOfBirth" : "1970-01-01T00:00:00.000+0100",
+        "socialSecurityNumber" : "222.2222.22.2.22"
+    },
+    "baseInsured" : true
+}
+</code></pre>
+                </li>
+                <li>Response mit nicht gefundener Karte: HTTP Status Code 404 (momentan vereinfacht einfach null plus 200 Code)
+                </li>
+            </ul>
+        </li>
+        <li><strong>Informationen zu allen Grundversicherungskarten erhalten</strong>: GET http://localhost:8070/vekaapi/v1/cards</li>
+        <li><strong>Informationen zu einem Versicherer erhalten</strong>
+            <ul>
+                <li>Request URL: GET http://localhost:8070/vekaapi/v1/insurerer/{bagNumber}</li>
+                <li>Request Parameter: {bagNumber} durch Versicherernummer des Bundesamts für Gesundheit ersetzen (https://www.bag.admin.ch/dam/bag/de/dokumente/kuv-aufsicht/bakv/zugelassene-krankenversicherer/zugelassenen-krankenversicherer-3.pdf.download.pdf/2016.06.10_zugelassene%20Krankenversicherer.pdf)</li>
+                <li>Response mit gefundenem Versicherer:
+<pre><code>{
+    "bagNumber" : 1555,
+    "name" : "Visana AG",
+    "address" :
+    {
+        "street" : "Weltpoststrasse",
+        "houseNumber" : "19/21",
+        "zipCode" : 3000,
+        "town" : "Bern 15"
+    },
+    "phone" : "+41313579111",
+    "email" : "info@visana.ch",
+    "www" : "www.visana.ch"
+}
+</code></pre>
+                </li>
+            </ul>
+        </li>
+        <li><strong>Informationen zu allen Versicherer erhalten</strong>: GET http://localhost:8070/vekaapi/v1/insurerer</li>
+        <li><strong>Einen Versicherer hinzufügen</strong>
+            <ul>
+                <li>Request URL: POST http://localhost:8070/vekaapi/v1/insurerer</li>
+                <li>Request Payload:
+<pre><code>{
+    "bagNumber" : 1555,
+    "name" : "Visana AG",
+    "address" :
+    {
+        "street" : "Weltpoststrasse",
+        "houseNumber" : "19/21",
+        "zipCode" : 3000,
+        "town" : "Bern 15"
+    },
+    "phone" : "+41313579111",
+    "email" : "info@visana.ch",
+    "www" : "www.visana.ch"
+}
+</code></pre>
+                </li>
+                <li>Response bei erfolgreichem Hinzufügen: HTTP Status Code 201</li>
+                <li>Response bei Fehlschlagen: HTTP Status Code 400 und eine error payload wie folgt:
+<pre><code>{
+    "errors": [
+        {
+            "userMessage": "This insurer exists already in the database",
+            "internalMessage": "Resource already exists",
+            "code": 99,
+        }
+    ]
+}
+</code></pre>
+                </li>
+            </ul>
+        </li>
     </ul>
-    <p>Zudem können Sie <a href="/registeredinsurerer">hier</a> eine Liste aller aktuell registrierten Versicherern abrufen.</p>
+    
+    <p>Zudem können Sie <a href="/insurerer">hier</a> eine Liste aller aktuell bei VeKa registrierten Versicherern abrufen.</p>
 </body>
 </html>

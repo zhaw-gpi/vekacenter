@@ -1,15 +1,13 @@
 package ch.zhaw.gpi.veka.repositories;
 
 import ch.zhaw.gpi.veka.entities.CardEntity;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
- * CRUD-Repository-Klasse für CardEntity-Objekte
- * 
- * Erweitert die Standard Spring-CrudRepository, wobei keine Erweiterungen erforderlich sind
+ * Repository-Klasse für Versicherten-Karten-Entität, welche CRUD-Operationen auf die dahinterliegende Datenbank kapselt
  * 
  * @author scep
  */
-public interface CardRepository extends CrudRepository<CardEntity, Long>{
+public interface CardRepository extends JpaRepository<CardEntity, Long>{
     
 }

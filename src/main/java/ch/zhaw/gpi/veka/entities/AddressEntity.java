@@ -9,24 +9,28 @@ import javax.persistence.Id;
 /**
  * Entity-Klasse für Adressen
  * 
- * @Entity, um die Klasse als JPA Entität zu kennzeichnen, damit automatisch
- * im Hintergrund über Hibernate eine Tabelle in der H2-Datenbank erstellt
- * und verwaltet werden kann
- * 
  * @author scep
  */
 @Entity (name = "Address")
 public class AddressEntity implements Serializable {
-    // @Id, um JPA mitzuteilen, dass dieses Attribut der Primärschlüssel ist
+    // Automatisch generierte Adress-Id
     @Id
-    // und dabei automatisch generiert werden soll (+1 für jeden neuen Eintrag)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    // Strasse
     private String street;
+    
+    // Hausnummer
     private String houseNumber;
+    
+    // PLZ
     private int plz;
+    
+    // Stadt/Ort
     private String town;
     
+    // GETTER und SETTER
     public String getStreet() {
         return street;
     }
@@ -61,7 +65,5 @@ public class AddressEntity implements Serializable {
     public AddressEntity setTown(String town) {
         this.town = town;
         return this;
-    }
-    
-    
+    }    
 }

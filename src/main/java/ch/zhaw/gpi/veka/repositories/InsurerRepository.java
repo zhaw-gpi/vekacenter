@@ -2,16 +2,14 @@ package ch.zhaw.gpi.veka.repositories;
 
 import ch.zhaw.gpi.veka.entities.InsurerEntity;
 import java.util.List;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
- * CRUD-Repository-Klasse für InsurerEntity-Objekte
- * 
- * Erweitert die Standard Spring-CrudRepository
+ * Repository-Klasse für Versicherer-Entität, welche CRUD-Operationen auf die dahinterliegende Datenbank kapselt
  * 
  * @author scep
  */
-public interface InsurerRepository extends CrudRepository<InsurerEntity, Long>{
+public interface InsurerRepository extends JpaRepository<InsurerEntity, Long>{
     
     // Benutzerdefinierte Methode, um Versicherer über ihren Namen zu finden.
     // Im Hintergrund wird von JPA eine entsprechende Methode erstellt aus dem Namen 
