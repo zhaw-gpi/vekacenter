@@ -1,7 +1,6 @@
 package ch.zhaw.gpi.veka.entities;
 
 import java.io.Serializable;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -22,7 +21,7 @@ public class InsurerEntity implements Serializable {
     private String name;
     
     // Referenz auf eine Adresse
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "ADDRESS_ID")
     private AddressEntity address;
     

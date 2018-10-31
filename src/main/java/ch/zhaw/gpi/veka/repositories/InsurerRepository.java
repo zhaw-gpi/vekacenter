@@ -10,12 +10,18 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author scep
  */
 public interface InsurerRepository extends JpaRepository<InsurerEntity, Long>{
+
+    /**
+     * Methode, welche alle Versicherer findet, welche im Namen einen übergebenen String enthalten
+     * 
+     * @param name  Der Name oder einen Teil davon eines Versicherers
+     * @return      Liste der gefundenen Versicherer
+     */
+    List<InsurerEntity> findByNameIgnoreCaseContaining(String name);
     
-    // Benutzerdefinierte Methode, um Versicherer über ihren Namen zu finden.
-    // Im Hintergrund wird von JPA eine entsprechende Methode erstellt aus dem Namen 
-    // dieser Methode, welcher einer klaren Syntax folgt: findBy, dann das Attribut
-    // und der Hinweis, dass Gross-/Kleinschreibung keine Rolle spielt
-    List<InsurerEntity> findByNameIgnoreCase(String name);
-    
+    /**
+     * Methode, welche alle Versicherer aufsteigend nach Name sortiert zurückgibt
+     * @return
+     */
     List<InsurerEntity> findAllByOrderByName();
 }
