@@ -5,6 +5,8 @@ import ch.zhaw.gpi.veka.repositories.CardRepository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,33 +28,39 @@ public class CardRestController {
      * REST-Ressource für URL /vekaapi/v1/cards/{cardNumber} (GET)
      * 
      * @param cardNumber        Versicherten-Kartennummer
-     * @return                  zu einer Kartennummer passende Versicherten-Karten-Entität im JSON-Format
+     * @return                  HTTP-Response mit einem Status 200 oder 404, sowie im ersten Fall einer zur Kartennummer passenden Versicherten-Karten-Entität als Body
      */
     @RequestMapping(value = "/vekaapi/v1/cards/{cardNumber}", method = RequestMethod.GET)
-    public CardEntity getCard(@PathVariable Long cardNumber){        
+    public ResponseEntity<CardEntity> getCard(@PathVariable Long cardNumber){        
         // Zur Kartennummer passende Karte suchen
         Optional<CardEntity> card = cardRepository.findById(cardNumber);
         
         // Falls Karte gefunden wurde, dann card zurück geben
         if(card.isPresent()) {
-            return card.get();
+            return new ResponseEntity(card.get(), HttpStatus.OK);
         } else {
-            // ansonsten null zurückgeben (in der Realität wäre HTTP 404 sinnvoller, denn nun kommt 200)
-            return null;
+            // Ansonsten ResourceNotFoundException (404)
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }        
     }
     
     /**
      * REST-Ressource für URL /vekaapi/v1/cards (GET)
      * 
-     * @return      Liste aller Versichertenkarten-Entitäten im JSON-Format
+     * @return                  HTTP-Response mit einem Status 200 oder 404, sowie im ersten Fall einer Liste aller Versichertenkarten-Entitäten im JSON-Format
      */
     @RequestMapping(value = "/vekaapi/v1/cards", method = RequestMethod.GET)
-    public List<CardEntity> getCards(){
+    public ResponseEntity<List<CardEntity>> getCards(){
         // Alle Karten aus dem Repository laden und der cards-Variable zuweisen
         List<CardEntity> cards = cardRepository.findAll();
         
-        // Liste zurück geben an Client (wird automatisch in JSON serialisiert)
-        return cards;
+        // Wenn die Liste Einträge enthält...
+        if(cards != null && !cards.isEmpty()){
+            // ... dann diese als Body zurückgeben
+            return new ResponseEntity(cards, HttpStatus.OK);
+        } else {
+            // ... ansonsten ResourceNotFoundException (404)
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
     }
 }
