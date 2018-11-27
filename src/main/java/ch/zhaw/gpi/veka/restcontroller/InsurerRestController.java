@@ -1,6 +1,8 @@
 package ch.zhaw.gpi.veka.restcontroller;
 
+import ch.zhaw.gpi.veka.entities.AddressEntity;
 import ch.zhaw.gpi.veka.entities.InsurerEntity;
+import ch.zhaw.gpi.veka.repositories.AddressRepository;
 import ch.zhaw.gpi.veka.repositories.InsurerRepository;
 import java.util.List;
 import java.util.Optional;
@@ -20,9 +22,12 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class InsurerRestController {
-    // Verdrahten des Versicherer-Repositories
+    // Verdrahten der Repositories
     @Autowired
     private InsurerRepository insurerRepository;
+    
+    @Autowired
+    private AddressRepository addressRepository;
     
     /**
      * REST-Ressource für URL /vekaapi/v1/insurerer (GET)
@@ -68,22 +73,40 @@ public class InsurerRestController {
      * REST-Ressource für URL /vekaapi/v1/insurerer (POST)
      * 
      * @param newInsurer        Ein Insurer-Objekt im JSON-Format
-     * @return                  Das neu angelegte Insurer-Objekt
+     * @return                  HTTP-Status (409, 200 oder 500)
      */
     @RequestMapping(value = "/vekaapi/v1/insurerer", method = RequestMethod.POST)
-    public ResponseEntity<InsurerEntity> addInsurer(@RequestBody InsurerEntity newInsurer){
-        // Prüfen, ob nicht bereits eine Krankenkasse mit dieser Id erfasst ist
+    public ResponseEntity addInsurer(@RequestBody InsurerEntity newInsurer){
+        // Nach einem Versicherer mit der Id des anzulegenden Versicherers suchen
         Optional<InsurerEntity> searchedInsurer = insurerRepository.findById(newInsurer.getId());
+        
+        // Prüfen, ob bereits eine Krankenkasse mit dieser Id erfasst ist
         if(searchedInsurer.isPresent()){
-            // Falls ja, dann Konflikt-Meldung zurückgeben
-            return new ResponseEntity(HttpStatus.CONFLICT);
+            // Falls ja, dann OK-Status zurückgeben
+            return new ResponseEntity(HttpStatus.OK);
         } else {
+            // Ansonsten den neuen Versicherer anlegen versuchen
             try {
-                // Versuchen, den neuen Versicherer zu persistieren
+                // Adresse des Versicherers im Repository suchen
+                Optional<AddressEntity> addressEntity = addressRepository.findByPlzAndStreetAndHouseNumber(
+                        newInsurer.getAddress().getPlz(), 
+                        newInsurer.getAddress().getStreet(),
+                        newInsurer.getAddress().getHouseNumber());
+                
+                // Falls Adresse schon existiert, ...
+                if(addressEntity.isPresent()){
+                    // ...diese als Adresse verwenden
+                    newInsurer.setAddress(addressEntity.get());
+                } else {
+                    // ... ansonsten diese als neue Adresse speichern und zuweisen
+                    newInsurer.setAddress(addressRepository.save(newInsurer.getAddress()));
+                }
+                
+                // Den neuen Versicherer persistieren
                 InsurerEntity persistedInsurer = insurerRepository.save(newInsurer);
 
                 // Erfolgreiche Response zurück geben
-                return new ResponseEntity(persistedInsurer, HttpStatus.CREATED);
+                return new ResponseEntity(HttpStatus.OK);
             } catch(Exception e) {
                 // Ansonsten allgemeine Fehlermeldung zurückgeben
                 return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
