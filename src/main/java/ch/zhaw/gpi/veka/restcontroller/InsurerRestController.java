@@ -6,9 +6,11 @@ import ch.zhaw.gpi.veka.repositories.AddressRepository;
 import ch.zhaw.gpi.veka.repositories.InsurerRepository;
 import java.util.List;
 import java.util.Optional;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
  * @author scep
  */
 @RestController
+// Zugriff via JavaScript auf diese Methode soll von allen Clients möglich sein
+@CrossOrigin
 public class InsurerRestController {
     // Verdrahten der Repositories
     @Autowired
@@ -76,7 +80,7 @@ public class InsurerRestController {
      * @return                  HTTP-Status (409, 200 oder 500)
      */
     @RequestMapping(value = "/vekaapi/v1/insurerer", method = RequestMethod.POST)
-    public ResponseEntity addInsurer(@RequestBody InsurerEntity newInsurer){
+    public ResponseEntity addInsurer(@RequestBody @Valid InsurerEntity newInsurer){
         // Nach einem Versicherer mit der Id des anzulegenden Versicherers suchen
         Optional<InsurerEntity> searchedInsurer = insurerRepository.findById(newInsurer.getId());
         
@@ -103,7 +107,7 @@ public class InsurerRestController {
                 }
                 
                 // Den neuen Versicherer persistieren
-                InsurerEntity persistedInsurer = insurerRepository.save(newInsurer);
+                insurerRepository.save(newInsurer);
 
                 // Erfolgreiche Response zurück geben
                 return new ResponseEntity(HttpStatus.OK);

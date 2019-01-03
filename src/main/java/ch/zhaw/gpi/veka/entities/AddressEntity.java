@@ -1,15 +1,18 @@
 package ch.zhaw.gpi.veka.entities;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 
 /**
  * Entity-Klasse für Adressen
  * 
- * @author scep
+ * @author scep und Markus Cristelotti, Angela Keller, Tim Schrödel, Dominik Straub, Matthias Urech und Philipp Winter (Equals-Methode für Adress-Entity)
+
  */
 @Entity (name = "Address")
 public class AddressEntity implements Serializable {
@@ -19,15 +22,18 @@ public class AddressEntity implements Serializable {
     private Long id;
     
     // Strasse
+    @NotNull
     private String street;
     
     // Hausnummer
     private String houseNumber;
     
     // PLZ
+    @NotNull
     private int plz;
     
     // Stadt/Ort
+    @NotNull
     private String town;
     
     // GETTER und SETTER
@@ -65,5 +71,62 @@ public class AddressEntity implements Serializable {
     public AddressEntity setTown(String town) {
         this.town = town;
         return this;
-    }    
+    }
+    
+    /**
+     * Überprüfen ob ein Objekt gleich ist wie diese Adresse
+     * (vergleichen)
+     *
+     * @param      obj   Eine beliebige Adresse (kann auch ein beliebiges Objekt
+     *                   sein. in dem Fall sind sie natürlich nicht gleich)
+     *
+     * @return     wahr/falsch ob beide Objekte gleich sind
+     */
+    @Override
+    public boolean equals(Object obj) {
+        // Haben beide Objekte die gleiche Referenz
+        if (this == obj) {
+            return true;
+        }
+        
+        // ist das zu vergleichebare Objekt null
+        if (obj == null) {
+            return false;
+        }
+        
+        // sind beide Objekte nicht von der gleichen Klasse
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        
+        // vergleichbare Objekt in Typ Adresse machen
+        final AddressEntity other = (AddressEntity) obj;
+        
+        // PLZ vergleichen
+        if (this.plz != other.plz) {
+            return false;
+        }
+        
+        // Strasse vergleichen
+        if (!Objects.equals(this.street, other.street)) {
+            return false;
+        }
+        
+        // Hausnummer vergleichen
+        if (!Objects.equals(this.houseNumber, other.houseNumber)) {
+            return false;
+        }
+        
+        // Ort vergleichen
+        if (!Objects.equals(this.town, other.town)) {
+            return false;
+        }
+        
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.street, this.plz, this.houseNumber);
+    }
 }

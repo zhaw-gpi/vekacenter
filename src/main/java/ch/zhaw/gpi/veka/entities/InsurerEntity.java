@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 /**
  * Entity-Klasse für Versicherer
@@ -18,6 +19,7 @@ public class InsurerEntity implements Serializable {
     private Long id;
     
     // Name des Versicherers
+    @NotNull
     private String name;
     
     // Referenz auf eine Adresse

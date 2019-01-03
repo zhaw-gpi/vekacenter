@@ -43,7 +43,7 @@
 }
 </code></pre>
                 </li>
-                <li>Response mit nicht gefundener Karte: HTTP Status Code 404 (momentan vereinfacht einfach null plus 200 Code)
+                <li>Response mit nicht gefundener Karte: HTTP Status Code 404
                 </li>
             </ul>
         </li>
@@ -105,6 +105,24 @@
 }
 </code></pre>
                 </li>
+            </ul>
+        </li>
+        <li><strong>Die Adresse einer versicherten Person ändern</strong>
+            <ul>
+                <li>Request URL: PUT http://localhost:8070/vekaapi/v1/persons/{id}/address</li>
+                <li>Request Parameter: {id} durch Id einer versicherten Person ersetzen. Diese kann herausgefunden werden, wenn man die zugehörige Card über die CardNumber ausliest.</li>
+                <li>Request Payload:
+<pre><code>{
+    "street" : "Weltpoststrasse",
+    "houseNumber" : "19/21",
+    "zipCode" : 3000,
+    "town" : "Bern 15"
+    }
+}
+</code></pre>
+                </li>
+                <li>Response bei erfolgreichem Ändern oder falls diese Adresse bereits zugewiesen ist: HTTP Status Code 200</li>
+                <li>Response bei nicht gefundener Person: HTTP Status Code 404</li>
             </ul>
         </li>
     </ul>

@@ -5,9 +5,12 @@ import ch.zhaw.gpi.veka.entities.PersonEntity;
 import ch.zhaw.gpi.veka.repositories.AddressRepository;
 import ch.zhaw.gpi.veka.repositories.PersonRepository;
 import java.util.Optional;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,9 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * Geschäftslogik und REST-Schnittstelle im Zusammenhang mit versicherten Personen
  * 
- * @author scep
+ * @author scep und Manuel Weiss
  */
 @RestController
+// Zugriff via JavaScript auf diese Methode soll von allen Clients möglich sein
+@CrossOrigin
 public class PersonRestController {
     
     // Verdrahten benötigter JPA-Repositories
@@ -36,7 +41,8 @@ public class PersonRestController {
      * @return ResponseEntity   Nicht-Gefunden-Status (404), falls Person nicht vorhanden, ansonsten OK-Status (200)
      */
     @RequestMapping(method = RequestMethod.PUT, value = "/vekaapi/v1/persons/{id}/address")
-    public ResponseEntity updateAddress(@RequestBody AddressEntity newAddress, @PathVariable Long id){
+    // @Valid: Stellt sicher, dass newAddress die Einschränkungen in AdressEntity einhalten muss (z.B. NotNull)
+    public ResponseEntity updateAddress(@Valid @RequestBody AddressEntity newAddress, @PathVariable Long id){
         // Person über die Id im Repository suchen
         Optional<PersonEntity> person = personRepository.findById(id);
         
@@ -46,16 +52,17 @@ public class PersonRestController {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         
-        // Prüfen, ob die übergebene Adresse gar nicht neu ist, also mit der bestehenden übereinstimmt
-        // Hinweis: Umständlich gelöst hier im Controller. Sauberer wäre natürlich, wenn man in AddressEntity einen Override der equals- und hashCode-Methoden macht, wie z.B. beschrieben in https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/. Dann würde man sinnvollerweise aber eine andere Id wählen, die wirklich eindeutig ist, in der Schweiz z.B. die Id für Hauseingänge. Auch eine einigermassen sauberere Lösung wäre, eine compareTo-Methode in der Entity hinzuzufügen. Eine weitere Variante ist, über eine neue findByPlzAndStreetAndHouseNumber-Methodendeklaration im AddressRepository nach der neuen Adresse zu suchen und dann zu schauen, ob sie mit der alten Adresse übereinstimmt.
+        // Die bisher zugewiesene Adresse in Variable speichern
         AddressEntity oldAddress = person.get().getAddressPostal();
-        if(oldAddress.getPlz() == newAddress.getPlz() && oldAddress.getStreet().equals(newAddress.getStreet()) && oldAddress.getHouseNumber().equals(newAddress.getHouseNumber())){
+        
+        // Prüfen, ob die übergebene Adresse gar nicht neu ist, also mit der bereits der Person zugewiesenen übereinstimmt
+        if(newAddress.equals(oldAddress)){
             // Falls ja, dann OK-Status zurückgeben
             return new ResponseEntity(HttpStatus.OK);
         }
 
         // Im Repository nach der neuen Adresse suchen
-        Optional<AddressEntity> searchedAddress = addressRepository.findByPlzAndStreetAndHouseNumber(newAddress.getPlz(), newAddress.getStreet(), newAddress.getHouseNumber());
+        Optional<AddressEntity> searchedAddress = addressRepository.findOne(Example.of(newAddress));
         
         // Falls die neue Adresse noch nicht erfasst ist, ...
         if(!searchedAddress.isPresent()){
