@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.Range;
 
 /**
  * Entity-Klasse für Adressen
@@ -30,6 +31,7 @@ public class AddressEntity implements Serializable {
     
     // PLZ
     @NotNull
+    @Range(min = 1, max = 9999)
     private int plz;
     
     // Stadt/Ort
