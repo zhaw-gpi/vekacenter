@@ -16,6 +16,7 @@ import javax.validation.constraints.NotNull;
 public class InsurerEntity implements Serializable {
     // BAG-Nummer des Versicherers als Id
     @Id
+    @NotNull // für Datenbank klar, aber für RestController-Validitätsprüfung
     private Long id;
     
     // Name des Versicherers
