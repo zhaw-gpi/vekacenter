@@ -1,6 +1,5 @@
 package ch.zhaw.gpi.veka.entities;
 
-import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -17,7 +16,7 @@ import javax.persistence.TemporalType;
  * @author scep
  */
 @Entity(name = "Card")
-public class CardEntity implements Serializable {
+public class CardEntity {
     // Manuell gesetzte Versichertenkarte-Id
     @Id
     private Long cardNumber;

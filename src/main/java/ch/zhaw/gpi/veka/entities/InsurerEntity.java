@@ -1,6 +1,5 @@
 package ch.zhaw.gpi.veka.entities;
 
-import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -13,7 +12,7 @@ import javax.validation.constraints.NotNull;
  * @author scep
  */
 @Entity(name = "Insurer")
-public class InsurerEntity implements Serializable {
+public class InsurerEntity {
     // BAG-Nummer des Versicherers als Id
     @Id
     @NotNull // für Datenbank klar, aber für RestController-Validitätsprüfung

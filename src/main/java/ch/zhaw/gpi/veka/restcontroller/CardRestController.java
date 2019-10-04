@@ -34,16 +34,16 @@ public class CardRestController {
      * @return                  HTTP-Response mit einem Status 200 oder 404, sowie im ersten Fall einer zur Kartennummer passenden Versicherten-Karten-Entität als Body
      */
     @RequestMapping(value = "/vekaapi/v1/cards/{cardNumber}", method = RequestMethod.GET)
-    public ResponseEntity<CardEntity> getCard(@PathVariable Long cardNumber){        
+    public ResponseEntity<?> getCard(@PathVariable Long cardNumber){        
         // Zur Kartennummer passende Karte suchen
         Optional<CardEntity> card = cardRepository.findById(cardNumber);
         
         // Falls Karte gefunden wurde, dann card zurück geben
         if(card.isPresent()) {
-            return new ResponseEntity(card.get(), HttpStatus.OK);
+            return new ResponseEntity<CardEntity>(card.get(), HttpStatus.OK);
         } else {
             // Ansonsten ResourceNotFoundException (404)
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<HttpStatus>(HttpStatus.NOT_FOUND);
         }        
     }
     
@@ -53,17 +53,17 @@ public class CardRestController {
      * @return                  HTTP-Response mit einem Status 200 oder 404, sowie im ersten Fall einer Liste aller Versichertenkarten-Entitäten im JSON-Format
      */
     @RequestMapping(value = "/vekaapi/v1/cards", method = RequestMethod.GET)
-    public ResponseEntity<List<CardEntity>> getCards(){
+    public ResponseEntity<?> getCards(){
         // Alle Karten aus dem Repository laden und der cards-Variable zuweisen
         List<CardEntity> cards = cardRepository.findAll();
         
         // Wenn die Liste Einträge enthält...
         if(cards != null && !cards.isEmpty()){
             // ... dann diese als Body zurückgeben
-            return new ResponseEntity(cards, HttpStatus.OK);
+            return new ResponseEntity<List<CardEntity>>(cards, HttpStatus.OK);
         } else {
             // ... ansonsten ResourceNotFoundException (404)
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<HttpStatus>(HttpStatus.NOT_FOUND);
         }
     }
 }

@@ -39,17 +39,17 @@ public class InsurerRestController {
      * @return      Liste aller Versicherer im JSON-Format
      */
     @RequestMapping(value = "/vekaapi/v1/insurerer", method = RequestMethod.GET)
-    public ResponseEntity<List<InsurerEntity>> getInsurerer() {
+    public ResponseEntity<?> getInsurerer() {
         // Liste aller Versicherer über Repository laden und der Variable insurerer zuweisen
         List<InsurerEntity> insurerer = insurerRepository.findAllByOrderByName();
         
         // Wenn die Liste Einträge enthält...
         if(insurerer != null && !insurerer.isEmpty()){
             // ... dann diese als Body zurückgeben
-            return new ResponseEntity(insurerer, HttpStatus.OK);
+            return new ResponseEntity<List<InsurerEntity>>(insurerer, HttpStatus.OK);
         } else {
             // ... ansonsten ResourceNotFoundException (404)
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<HttpStatus>(HttpStatus.NOT_FOUND);
         }
     }
     
@@ -60,16 +60,16 @@ public class InsurerRestController {
      * @return              Versicherer-Angaben im JSON-Format
      */
     @RequestMapping(value = "/vekaapi/v1/insurerer/{bagNumber}", method = RequestMethod.GET)
-    public ResponseEntity<InsurerEntity> getInsurer(@PathVariable Long bagNumber){
+    public ResponseEntity<?> getInsurer(@PathVariable Long bagNumber){
         // Zur BAG-Nummer passenden Versicherer suchen
         Optional<InsurerEntity> insurer = insurerRepository.findById(bagNumber);
         
         // Falls Versicherer gefunden wurde, dann diesen zurück geben
         if(insurer.isPresent()) {
-            return new ResponseEntity(insurer.get(), HttpStatus.OK);
+            return new ResponseEntity<InsurerEntity>(insurer.get(), HttpStatus.OK);
         } else {
             // Ansonsten ResourceNotFoundException (404)
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<HttpStatus>(HttpStatus.NOT_FOUND);
         }      
     }
     
@@ -80,14 +80,14 @@ public class InsurerRestController {
      * @return                  HTTP-Status (409, 200 oder 500)
      */
     @RequestMapping(value = "/vekaapi/v1/insurerer", method = RequestMethod.POST)
-    public ResponseEntity addInsurer(@RequestBody @Valid InsurerEntity newInsurer){
+    public ResponseEntity<HttpStatus> addInsurer(@RequestBody @Valid InsurerEntity newInsurer){
         // Nach einem Versicherer mit der Id des anzulegenden Versicherers suchen
         Optional<InsurerEntity> searchedInsurer = insurerRepository.findById(newInsurer.getId());
         
         // Prüfen, ob bereits eine Krankenkasse mit dieser Id erfasst ist
         if(searchedInsurer.isPresent()){
             // Falls ja, dann OK-Status zurückgeben
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity<HttpStatus>(HttpStatus.OK);
         } else {
             // Ansonsten den neuen Versicherer anlegen versuchen
             try {
@@ -110,10 +110,10 @@ public class InsurerRestController {
                 insurerRepository.save(newInsurer);
 
                 // Erfolgreiche Response zurück geben
-                return new ResponseEntity(HttpStatus.OK);
+                return new ResponseEntity<HttpStatus>(HttpStatus.OK);
             } catch(Exception e) {
                 // Ansonsten allgemeine Fehlermeldung zurückgeben
-                return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<HttpStatus>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
     }

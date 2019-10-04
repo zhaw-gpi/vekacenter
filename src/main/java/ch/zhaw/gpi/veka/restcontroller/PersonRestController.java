@@ -42,14 +42,14 @@ public class PersonRestController {
      */
     @RequestMapping(method = RequestMethod.PUT, value = "/vekaapi/v1/persons/{id}/address")
     // @Valid: Stellt sicher, dass newAddress die Einschränkungen in AdressEntity einhalten muss (z.B. NotNull)
-    public ResponseEntity updateAddress(@Valid @RequestBody AddressEntity newAddress, @PathVariable Long id){
+    public ResponseEntity<HttpStatus> updateAddress(@Valid @RequestBody AddressEntity newAddress, @PathVariable Long id){
         // Person über die Id im Repository suchen
         Optional<PersonEntity> person = personRepository.findById(id);
         
         // Falls Person mit dieser Id nicht vorhanden, ...
         if(!person.isPresent()){
             // ... dann 404 (Nicht gefunden)-Status zurückgeben
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<HttpStatus>(HttpStatus.NOT_FOUND);
         }
         
         // Die bisher zugewiesene Adresse in Variable speichern
@@ -58,7 +58,7 @@ public class PersonRestController {
         // Prüfen, ob die übergebene Adresse gar nicht neu ist, also mit der bereits der Person zugewiesenen übereinstimmt
         if(newAddress.equals(oldAddress)){
             // Falls ja, dann OK-Status zurückgeben
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity<HttpStatus>(HttpStatus.OK);
         }
 
         // Im Repository nach der neuen Adresse suchen
@@ -86,6 +86,6 @@ public class PersonRestController {
         }
         
         // OK-Status zurück geben
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity<HttpStatus>(HttpStatus.OK);
     }
 }

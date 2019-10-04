@@ -1,6 +1,5 @@
 package ch.zhaw.gpi.veka.entities;
 
-import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,7 +13,7 @@ import javax.persistence.ManyToOne;
  * @author scep
  */
 @Entity(name = "Person")
-public class PersonEntity implements Serializable {
+public class PersonEntity {
     // Automatisch generierte Personen-Id
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

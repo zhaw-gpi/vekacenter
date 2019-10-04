@@ -1,6 +1,5 @@
 package ch.zhaw.gpi.veka.entities;
 
-import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,7 +15,7 @@ import org.hibernate.validator.constraints.Range;
 
  */
 @Entity (name = "Address")
-public class AddressEntity implements Serializable {
+public class AddressEntity {
     // Automatisch generierte Adress-Id
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

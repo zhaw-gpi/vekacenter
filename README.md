@@ -2,7 +2,7 @@
 
 > Autoren der Dokumentation: Björn Scheppler
 
-> Dokumentation letztmals aktualisiert: 3.1.2019
+> Dokumentation letztmals aktualisiert: 4.10.2019
 
 Dieses **Maven**-Projekt simuliert den **Versichertenkarten-Auskunftsdienst**, welcher Operationen über **REST** zu Versichertenkarten, Versicherten und Versicherern bereitstellt.
 
@@ -31,12 +31,12 @@ Dieses Projekt wird in der [**eUmzugPrototyp-Lösung**](https://github.com/zhaw-
 5. **Test-Fälle** als soapUI-Projekt (src\test\resources\VeKa-REST-API-soapui-project.xml)
 
 ## Deployment
-1. **Erstmalig** oder bei Problemen ein **Clean & Build (Netbeans)**, respektive `mvn clean install` (Cmd) durchführen
-2. Bei Änderungen am POM-File oder bei **(Neu)kompilierungsbedarf** genügt ein **Build (Netbeans)**, respektive `mvn install`
+1. **Erstmalig** oder bei Problemen ein `mvn clean install` durchführen
+2. Bei Änderungen am POM-File oder bei **(Neu)kompilierungsbedarf** genügt ein `mvn install`
 
 ## Nutzung
 ### Allgemein
-1. Für den **Start** ist ein **Run (Netbeans)**, respektive `java -jar .\target\NAME DES JAR-FILES.jar` (Cmd) erforderlich. Dabei wird Tomcat gestartet, die Datenbank erstellt/hochgefahren mit den Eigenschaften (application.properties) und die verschiedenen Resourcen-URL-Mappings vorgenommen.
+1. Für den **Start** ist ein `java -jar .\target\NAME DES JAR-FILES.jar` erforderlich. Dabei wird Tomcat gestartet, die Datenbank erstellt/hochgefahren mit den Eigenschaften (application.properties) und die verschiedenen Resourcen-URL-Mappings vorgenommen.
 2. Beim Starten werden die **Insert-Statements** in src\main\ressources\data.sql ausgeführt.
 3. http://localhost:8070 aufrufen => Eine **Willkommens-Seite** mit Dokumentation wird angezeigt.
 4. http://localhost:8070/insurerer aufrufen => Eine **Liste aller Versicherer** wird angezeigt.
@@ -49,7 +49,7 @@ Am einfachsten mit **soapUI** und dem entsprechenden Testprojekt die REST-Reques
 Hierzu den Anweisungen folgen in https://github.com/zhaw-gpi/eumzug-plattform-2018.
 
 ### Fortgeschrittene Nutzung (Datenbank-Konsole)
-1. Um auf die Datenbankverwaltungs-Umgebung zuzugreifen, http://localhost:TOMCAT_PORT/console eingeben.
+1. Um auf die Datenbankverwaltungs-Umgebung zuzugreifen, http://localhost:8070/console eingeben.
 2. Anmeldung über:
     1. Benutzername sa
     2. Passwort: leer lassen
